@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-boyaki-dev-75151-authRole",
+      "UnauthRoleArn": "arn:aws:iam::513333944347:role/amplify-boyaki-dev-75151-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::513333944347:role/amplify-boyaki-dev-75151-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-boyaki-dev-75151-deployment",
+      "UnauthRoleName": "amplify-boyaki-dev-75151-unauthRole",
+      "StackName": "amplify-boyaki-dev-75151",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:513333944347:stack/amplify-boyaki-dev-75151/a4de5500-908f-11ec-b453-0e9763b485a1",
+      "AmplifyAppId": "dl51opkezl3uf"
+    },
+    "categories": {
+      "auth": {
+        "boyakib7bf8408": {}
+      }
+    }
+  }
+}
