@@ -1,188 +1,136 @@
-import { Component } from 'react';
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
-import { createNote, deleteNote } from './graphql/mutations';
-import { listNotes } from './graphql/queries';
-
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Header from "./Header";
 import awsExports from './aws-exports';
+import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import { createTodo, updateTodo, deleteTodo} from "./graphql/mutations";
+import { listTodos } from "./graphql/queries";
+import moment from 'moment';
+import { BrowserRouter, Route,Link } from 'react-router-dom';
+import { Grid, IconButton } from '@material-ui/core';
+import {ArrowForward, ArrowBack }from '@material-ui/icons';
+import {Page1} from "./Component/page1";
+import {Page2} from "./Component/page2";
+import {Page3} from "./Component/page3";
+import {Page4} from "./Component/page4";
+import {Page5} from "./Component/page5";
+import {Page6} from "./Component/page6";
+import Question7 from "./Component/Q7";
+import {Finish} from "./Component/page8";
 
+ 
 Amplify.configure(awsExports);
 
-class AddNote extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { text: '' };
+  export function App() {
+  const { register, handleSubmit, watch, getValues} = useForm()
+  const [data, setData] = useState("");
+  const [handle, setHandle] = useState("")
+  const [mode, setMode] = useState("new");
+  const [editData, setEditData] = useState([])
+  const [dynamoData, setDynamoData] = useState([])
+  const [nameV, setNameV] = useState("")
+
+  const [likertData1, setLikertData1] = useState("");
+  const [sampleData, setSampleData] = useState("");
+  const [sampleData2, setSampleData2]= useState("");
+  
+
+  const [status, setStatus] = useState(1)
+  
+  var date = moment()
+  var today = date.format('YYYY-MM-DD');
+  var yesterday = date.subtract(1, 'd').format('YYYY-MM-DD')
+  // 今後はログインしたユーザーで絞るフィルターを
+  const filter_T = {
+    registration: {
+      'eq': today 
+    }
+  }
+  const filter_Y = {
+    registration: {
+      'eq': yesterday
+      
+    }
+  } 
+
+  // 初期化の段階で自動実行
+  useEffect(() => {
+    if (mode=="edit") {
+      setNameV(editData.name)
+    }
+    else{
+      console.log("new")
+    }
+    
+  }, [editData]);
+
+  
+  const handleClickNext = () => {
+    //addNote(data);
+    setStatus(status + 1);
+    // ここで条件分岐
+    if (status == 8) {
+      addNote();
+    }
+
   }
 
-  handleChange = (event) => {
-    this.setState({ text: event.target.value });
+  const handleClickBack = () => {
+    //addNote(data);
+    setStatus(status - 1);
+
   }
 
-  handleClick = () => {
-    this.props.addNote(this.state);
-    this.setState({ text: '' });
+  const handleChange = (event) => {
+    setHandle(event.target.value)
   }
 
-  render() {
-    return (
-      <div style={styles.form}>
-        <input
-          value={this.state.text}
-          onChange={this.handleChange}
-          placeholder="New Note"
-          style={styles.input}
-        />
-        <button onClick={this.handleClick} style={styles.addButton}>Add Note</button>
-      </div>
-    );
-  }
-}
-
-class NotesList extends Component {
-  render() {
-    return (
-      <div>
-        {this.props.notes.map(note =>
-          <div key={note.id} style={styles.note}>
-            <p>{note.text}</p>
-            <button onClick={() => { this.props.deleteNote(note) }} style={styles.deleteButton}>x</button>
-          </div>
-        )}
-      </div>
-    );
-  }
-}
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { notes: [] };
-  }
-
-  async componentDidMount() {
-    var result = await API.graphql(graphqlOperation(listNotes));
-    this.setState({ notes: result.data.listNotes.items });
-  }
-
-  deleteNote = async (note) => {
-    const id = {
-      id: note.id
-    };
-    await API.graphql(graphqlOperation(deleteNote, { input: id }));
-    this.setState({ notes: this.state.notes.filter(item => item.id !== note.id) });
-  }
-
-  addNote = async (note) => {
-    var result = await API.graphql(graphqlOperation(createNote, { input: note }));
-    this.state.notes.push(result.data.createNote);
-    this.setState({ notes: this.state.notes });
-  }
-
-  render() {
-    return (
-      <div style={styles.container}>
-        <h1>Notes App</h1>
-        <AddNote addNote={this.addNote} />
-        <NotesList notes={this.state.notes} deleteNote={this.deleteNote} />
-        <AmplifySignOut />
-      </div>
-    );
-  }
-}
-
-export default withAuthenticator(App);
-
-const styles = {
-  container: { width: 480, margin: '0 auto', padding: 20 },
-  form: { display: 'flex', marginBottom: 15 },
-  input: { flexGrow: 2, border: 'none', backgroundColor: '#ddd', padding: 12, fontSize: 18 },
-  addButton: { backgroundColor: 'black', color: 'white', outline: 'none', padding: 12, fontSize: 18 },
-  note: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 22, marginBottom: 15 },
-  deleteButton: { fontSize: 18, fontWeight: 'bold' }
-}
-
-
-//認証のひな型
-/*import React from 'react';// eslint-disable-line
-import Amplify from '@aws-amplify/core';// eslint-disable-line
-import awsmobile from './aws-exports';// eslint-disable-line
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';// eslint-disable-line
-import awsExports from './aws-exports';// eslint-disable-line
-import awsconfig from './aws-exports';;// eslint-disable-line
-import { Component } from 'react';// eslint-disable-line
-
-Amplify.configure(awsExports);
-
-
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { notes: [] };
+  const addNote = async () => {
+    console.log("送信します")
+    await API.graphql(graphqlOperation(createTodo, { 
+      input:{
+        name:"name",
+        sex:"sex",
+        hobby:"hobby",
+        text:sampleData,
+        work:likertData1,
+        registration:today
+      }  
+    }));  
   }
   
-  handleChange = (event) => {
-    this.setState({ text: event.target.value });
-  }
-
-  handleClick = () => {
-    this.props.addNote(this.state);
-    this.setState({ text: '' });
-  }
-  
- render() {
   return (
-    <div style = {styles.container}>
-      <h1>Hello login</h1>
-      <button>Add Note</button>
-      <AmplifySignOut />
-    </div>
+  <div class = "main">
+    <form onSubmit={handleSubmit((data) => setData(JSON.stringify(data)))}>
+      
+      <Header />
+        <body>
+        {
+          status == 1 ? <Page1 setSampleData1 = {setSampleData}/> : 
+          status == 2 ? <Page2 setSampleData2 = {setSampleData}/> : 
+          status == 3 ? <Page3 setSampleData3 = {setSampleData}/> : 
+          status == 4 ? <Page4 setSampleData4 = {setSampleData}/> : 
+          status == 5 ? <Page5 setSampleData5 = {setSampleData}/> : 
+          status == 6 ? <Page6 setSampleData6 = {setSampleData}/> : 
+          status == 7 ? <Question7 setLikertData1 = {setLikertData1}/> : 
+          status == 8 ? <Finish /> : ""
+          
+        }
+        <div class="box">
+        {
+        status != 8 ? <button class="box_imageRight"  onClick={handleClickNext}><img src="https://s3.ap-northeast-1.amazonaws.com/image.png/arrow.svg" height ="50" width="100" /></button> : ""
+        }
+        {
+        status != 1 && status != 8 ? <button class="box_imageLeft"  onClick={handleClickBack}><img src="https://s3.ap-northeast-1.amazonaws.com/image.png/Larrow.svg" height ="50" width="100" /></button> : ""
+        }
+        </div>
+        
+        
+        </body>
+
+
+    </form>
+  </div>
+      
   );
-}
-
-}
-
-export default withAuthenticator(App);
-
-const styles = {
-  container: { width: 480, margin: '0 auto', padding: 20 },
-  form: { display: 'flex', marginBottom: 15 },
-  input: { flexGrow: 2, border: 'none', backgroundColor: '#ddd', padding: 12, fontSize: 18 },
-  addButton: { backgroundColor: 'black', color: 'white', outline: 'none', padding: 12, fontSize: 18 },
-  note: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 22, marginBottom: 15 },
-  deleteButton: { fontSize: 18, fontWeight: 'bold' }
-}
-*/
-/*//Reactのひな形
---------------------------------------------------------------------------------
-import logo from './logo.svg';
-import './App.css';
-import React from 'react';// eslint-disable-line
-import Amplify from 'aws-amplify';// eslint-disable-line
-import awsmobile from './aws-exports';// eslint-disable-line
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';// eslint-disable-line
-
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
---------------------------------------------------------------------------------*/
+  };
