@@ -7,14 +7,6 @@ The first year I was working in natural language processing and the second year 
 I make smartphone applications as a hobby.
 My first language is Japanese and my second language is English. My English is at an everyday conversational level.
 
-
-私はロボット工学の学士を持っています。
-CiNiiで私の論文を見ることができます。
-https://cir.nii.ac.jp/crid/1050011097150923392
-今はITエンジニアとして3年間働いています。
-1年目は自然言語処理に携わる仕事をしており2年目からはwebアプリケーションエンジニアとしてフロントエンドとバックエンドをどちらもやっていました。またAWSクラウドも2年以上使っています。
-趣味でスマホアプリを作っています。
-私は第一言語は日本語で、第二言語は英語です。英語は日常会話レベルになります。
 ## 🌐 Socials:
 [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?logo=Twitter&logoColor=white)](https://twitter.com/https://twitter.com/R82eu3UVAAPQG9H) 
 
