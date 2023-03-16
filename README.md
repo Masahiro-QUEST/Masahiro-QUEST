@@ -6,6 +6,15 @@ I have been working as an IT engineer for 3 years now.
 The first year I was working in natural language processing and the second year I was working as a web application engineer, both front-end and back-end. I have also been using AWS cloud for more than 2 years.
 I make smartphone applications as a hobby.
 My first language is Japanese and my second language is English. My English is at an everyday conversational level.
+# certification
+<p align="center">
+<img src="https://user-images.githubusercontent.com/94669015/225532610-52a7b2f4-dee6-4a6e-b903-514cced0b889.png" alt="aws_cloud" width="150">
+<img src="https://user-images.githubusercontent.com/94669015/225532612-465a9476-945c-4cc0-b02e-54c7e4e97ea3.png" alt="aws_deve" width="150">
+<img src="https://user-images.githubusercontent.com/94669015/225532614-43322ff6-09e3-4741-9813-854c282b2d16.png" alt="aws_solu" width="150">
+<img src="https://user-images.githubusercontent.com/94669015/225532615-9c0b12cc-fd81-4b52-b9b6-6d25aa38b4f8.svg" alt="ms_azure900" width="150">
+<img src="https://user-images.githubusercontent.com/94669015/225532617-7017cfa0-fbbf-4b62-8d87-2072cc10ea46.svg" alt="ms_erp900" width="150">
+</p>
+
 
 ## 🌐 Socials:
 [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?logo=Twitter&logoColor=white)](https://twitter.com/https://twitter.com/R82eu3UVAAPQG9H) 
